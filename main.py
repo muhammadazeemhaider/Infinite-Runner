@@ -62,10 +62,20 @@ while game_is_running:
     if background_x <= -background_rect.width:
         background_x = 0
 
+    Runner.update()
+
+    if Runner.rect.left < 0:
+        Runner.rect.left = 0
+    if Runner.rect.right > screen_width:
+        Runner.rect.right = screen_width
+    if Runner.rect.top < 0:
+        Runner.rect.top = 0
+    if Runner.rect.bottom > screen_height:
+        Runner.rect.bottom = screen_height
+
     screen.fill((0, 0, 0))
     screen.blit(background_image, (background_x, 0))
     screen.blit(background_image, (background_x + background_rect.width, 0))
-    Runner.update()
     player_list.draw(screen)
 
     pygame.display.flip()
