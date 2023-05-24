@@ -62,8 +62,11 @@ while game_is_running:
     if background_x <= -background_rect.width:
         background_x = 0
 
-    Runner.update()
+    Runner.update() # update player position
 
+    """
+        The code below is to prevent the player from going off the screen
+    """
     if Runner.rect.left < 0:
         Runner.rect.left = 0
     if Runner.rect.right > screen_width:
@@ -73,9 +76,9 @@ while game_is_running:
     if Runner.rect.bottom > screen_height:
         Runner.rect.bottom = screen_height
 
-    screen.fill((0, 0, 0))
-    screen.blit(background_image, (background_x, 0))
-    screen.blit(background_image, (background_x + background_rect.width, 0))
+    # screen.fill((0, 0, 0))
+    screen.blit(background_image, (background_x, 0)) # adds the initial background image
+    screen.blit(background_image, (background_x + background_rect.width, 0)) # blit the second image right after the first one making it look like an infinite never ending screen
     player_list.draw(screen)
 
     pygame.display.flip()
