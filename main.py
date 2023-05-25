@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from BackgroundScreen import Background
 from runner import runner
+from enemy import enemy 
 import sys
 
 pygame.init()
@@ -25,6 +26,10 @@ Runner.rect.y = 500  # go to y
 player_list = pygame.sprite.Group()
 player_list.add(Runner)
 steps = 7
+
+Enemy = enemy(500, 300) #spawns enemy
+Enemy_list = pygame.sprite.Group() # creates enemy group
+Enemy_list.add(Enemy) # adds enemy to the group
 
 game_is_running = True
 
@@ -79,7 +84,8 @@ while game_is_running:
     # screen.fill((0, 0, 0))
     screen.blit(background_image, (background_x, 0)) # adds the initial background image
     screen.blit(background_image, (background_x + background_rect.width, 0)) # blit the second image right after the first one making it look like an infinite never ending screen
-    player_list.draw(screen)
+    player_list.draw(screen) # Draw the player on the screen
+    Enemy_list.draw(screen) # Draw the enemy on the screen
 
     pygame.display.flip()
 
