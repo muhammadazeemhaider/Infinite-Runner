@@ -1,14 +1,19 @@
 import pygame 
 import sys 
+import os
 from pygame.locals import *
 
-class enemy(pygame.sprite.Sprite):
+class Goblin(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("images/goblinHead.png").convert_alpha()
-        self.rect = self.image.get_rect()
-        self.rect.x = x 
-        self.rect.y = y
+        self.images = []
+        for i in range(1,4):
+            img = pygame.image.load(os.path.join('images', 'goblinidle', 'goblinidle' + str(i) + '.png')).convert_alpha()
+            self.images.append(img)
+            self.image = self.images[0]
+            self.rect = self.image.get_rect()
 
-    # def update():
+    def update(self):
+        
+
 

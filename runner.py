@@ -13,7 +13,7 @@ class runner(pygame.sprite.Sprite):
         self.frame = 0 # count frames
         self.images = []
         for i in range(1, 5):
-            img = pygame.image.load(os.path.join('images', 'hero' + str(i) + '.png')).convert_alpha()
+            img = pygame.image.load(os.path.join('images', 'Hero', 'hero' + str(i) + '.png')).convert_alpha()
             # Scale the image to the desired size
             img = pygame.transform.scale(img, (100, 100))  # Adjust the size as needed
             self.images.append(img)
