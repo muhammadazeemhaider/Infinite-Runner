@@ -3,6 +3,7 @@ from pygame.locals import *
 from BackgroundScreen import Background
 from runner import runner
 from enemy import Goblin
+from Platform import Platform
 import sys
 import random
 
@@ -14,7 +15,6 @@ pygame.display.set_caption("Infinite Runner: Phew Phew")
 
 clock = pygame.time.Clock()
 
-# sprite_sheet_image = pygame.image.load("maincharacter.jpg")
 background_image = pygame.image.load("images/background/background.jpg")
 background_rect = background_image.get_rect()
 background_x = 0
@@ -30,6 +30,9 @@ steps = 7
 
 enemy_list = pygame.sprite.Group()  # Create a group for enemies
 goblin = Goblin(screen_width, screen_height)
+
+platform_list = pygame.sprite.Group()  # Create a group for platforms
+platform_speed = 3  # Adjust the speed as needed
 
 game_is_running = True
 
@@ -75,9 +78,16 @@ while game_is_running:
         goblin.rect.left = screen_width
         goblin.rect.y = screen_height - goblin.rect.height
 
-    """
-        The code below is to prevent the player from going off the screen
-    """
+    if len(platform_list) < 5:  # Adjust the number of platforms as needed
+        new_platform = Platform(screen_width, screen_height)
+        platform_list.add(new_platform)
+
+    platform_list.update(platform_speed)
+
+    for platform in platform_list:
+        if platform.rect.right < 0:
+            platform.kill()
+
     if Runner.rect.left < 0:
         Runner.rect.left = 0
     if Runner.rect.right > screen_width:
@@ -87,11 +97,12 @@ while game_is_running:
     if Runner.rect.bottom > screen_height:
         Runner.rect.bottom = screen_height
 
-    screen.blit(background_image, (background_x, 0))  # adds the initial background image
-    screen.blit(background_image, (background_x + background_rect.width, 0))  # blit the second image right after the first one making it look like an infinite never ending screen
-    player_list.draw(screen)  # Draw the player on the screen
+    screen.blit(background_image, (background_x, 0))
+    screen.blit(background_image, (background_x + background_rect.width, 0))
+    player_list.draw(screen)
     screen.blit(goblin.image, (goblin.rect.x, goblin.rect.y))
     enemy_list.draw(screen)
+    platform_list.draw(screen)
 
     pygame.display.flip()
 
