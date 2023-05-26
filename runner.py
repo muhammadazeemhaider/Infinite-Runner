@@ -53,7 +53,9 @@ class runner(pygame.sprite.Sprite):
 
     def collide_with_enemy(self, enemy):
         if pygame.sprite.collide_rect(self, enemy):
-            # Handle collision with the enemy
-            print("Main character collided with enemy!")
-            # Add code to perform desired actions, such as decreasing health or triggering game over
+            # Collision occurred between runner and enemy
+            # Add your collision handling logic here
+            self.rect.x -= 10  # Push the runner away from the enemy (adjust the value as needed)
+            print("Collision occurred!")
+
 

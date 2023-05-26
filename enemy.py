@@ -59,7 +59,10 @@ class Goblin(pygame.sprite.Sprite):
         if pygame.sprite.collide_rect(self, runner):
             # Collision occurred between goblin and runner
             # Add your collision handling logic here
+            self.rect.x += 10  # Push the goblin away from the runner (adjust the value as needed)
+            print("Collision occurred between goblin and runner")
             self.is_attacking = True
         else:
             self.is_attacking = False
+
 

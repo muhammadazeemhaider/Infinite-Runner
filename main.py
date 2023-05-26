@@ -69,10 +69,12 @@ while game_is_running:
 
     Runner.update()  # update player position
     goblin.update()  # update enemy position
-    goblin.animate()  # animate goblin
+    # goblin.animate()  # animate goblin
 
     # Check for collision between the goblin and the main character
     goblin.collide_with_runner(Runner)
+
+    goblin.animate()
 
     if goblin.rect.right < 0:  # Respawn goblin when it goes off the screen
         goblin.rect.left = screen_width
