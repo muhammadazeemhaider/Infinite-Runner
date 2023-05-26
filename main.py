@@ -4,7 +4,7 @@ from BackgroundScreen import Background
 from runner import runner
 from enemy import Goblin
 import sys
-import random
+from pygame.sprite import spritecollide
 
 pygame.init()
 
@@ -29,6 +29,7 @@ steps = 7
 
 enemy_list = pygame.sprite.Group()  # Create a group for enemies
 goblin = Goblin(screen_width, screen_height)
+enemy_list.add(goblin)  # Add the goblin to the enemy group
 
 game_is_running = True
 
@@ -70,6 +71,9 @@ while game_is_running:
     goblin.update()  # update enemy position
     goblin.animate()  # animate goblin
 
+    # Check for collision between the goblin and the main character
+    goblin.collide_with_runner(Runner)
+
     if goblin.rect.right < 0:  # Respawn goblin when it goes off the screen
         goblin.rect.left = screen_width
         goblin.rect.y = screen_height - goblin.rect.height
@@ -77,16 +81,21 @@ while game_is_running:
     # Calculate the distance between the goblin and the main character
     distance = abs(Runner.rect.x - goblin.rect.x)
 
-    # Define the threshold distance to trigger the running and attacking sequence
+    # Define the threshold distance to trigger the running sequence
     threshold_distance = 400  # Adjust as needed
 
     if distance < threshold_distance:
-        # Trigger the running and attacking sequence
+        # Trigger the running sequence
         goblin.is_running = True
+    else:
+        # Reset the goblin's state
+        goblin.is_running = False
+
+    if pygame.sprite.spritecollideany(Runner, enemy_list):
+        # Trigger the attacking sequence
         goblin.is_attacking = True
     else:
-        # Reset the goblin's states
-        goblin.is_running = False
+        # Reset the goblin's state
         goblin.is_attacking = False
 
     if Runner.rect.left < 0:
@@ -101,10 +110,8 @@ while game_is_running:
     screen.blit(background_image, (background_x, 0))
     screen.blit(background_image, (background_x + background_rect.width, 0))
     player_list.draw(screen)
-    screen.blit(goblin.image, (goblin.rect.x, goblin.rect.y))
     enemy_list.draw(screen)
 
     pygame.display.flip()
 
 pygame.quit()
-
