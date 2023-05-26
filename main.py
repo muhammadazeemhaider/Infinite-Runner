@@ -3,7 +3,6 @@ from pygame.locals import *
 from BackgroundScreen import Background
 from runner import runner
 from enemy import Goblin
-from Platform import Platform
 import sys
 import random
 
@@ -30,9 +29,6 @@ steps = 7
 
 enemy_list = pygame.sprite.Group()  # Create a group for enemies
 goblin = Goblin(screen_width, screen_height)
-
-platform_list = pygame.sprite.Group()  # Create a group for platforms
-platform_speed = 3  # Adjust the speed as needed
 
 game_is_running = True
 
@@ -78,15 +74,20 @@ while game_is_running:
         goblin.rect.left = screen_width
         goblin.rect.y = screen_height - goblin.rect.height
 
-    if len(platform_list) < 5:  # Adjust the number of platforms as needed
-        new_platform = Platform(screen_width, screen_height)
-        platform_list.add(new_platform)
+    # Calculate the distance between the goblin and the main character
+    distance = abs(Runner.rect.x - goblin.rect.x)
 
-    platform_list.update(platform_speed)
+    # Define the threshold distance to trigger the running and attacking sequence
+    threshold_distance = 400  # Adjust as needed
 
-    for platform in platform_list:
-        if platform.rect.right < 0:
-            platform.kill()
+    if distance < threshold_distance:
+        # Trigger the running and attacking sequence
+        goblin.is_running = True
+        goblin.is_attacking = True
+    else:
+        # Reset the goblin's states
+        goblin.is_running = False
+        goblin.is_attacking = False
 
     if Runner.rect.left < 0:
         Runner.rect.left = 0
@@ -102,8 +103,8 @@ while game_is_running:
     player_list.draw(screen)
     screen.blit(goblin.image, (goblin.rect.x, goblin.rect.y))
     enemy_list.draw(screen)
-    platform_list.draw(screen)
 
     pygame.display.flip()
 
 pygame.quit()
+

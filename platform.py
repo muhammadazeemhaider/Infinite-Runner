@@ -14,7 +14,7 @@ class Platform(pygame.sprite.Sprite):
         self.image = self.images[self.frame]
         self.rect = self.image.get_rect()
         self.rect.x = randrange(screen_width)  # Set the x position randomly
-        self.rect.y = randrange(screen_height)  # Set the y position to the bottom of the screen
+        self.rect.y = randrange(screen_height - 200)  # Set the y position randomly
 
     def update(self, speed):
         # Move the platform horizontally based on the speed

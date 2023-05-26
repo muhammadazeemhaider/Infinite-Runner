@@ -1,3 +1,36 @@
+# import pygame
+# import os
+# from pygame.locals import *
+# from random import randint
+
+# class Goblin(pygame.sprite.Sprite):
+#     def __init__(self, screen_width, screen_height):
+#         pygame.sprite.Sprite.__init__(self)
+#         self.images = []
+#         self.frame = 0
+#         for i in range(1, 3):
+#             img = pygame.image.load(os.path.join('images', 'goblinidle', 'goblinidle' + str(i) + '.png')).convert_alpha()
+#             self.images.append(pygame.transform.flip(img, True, False))  # Flipping the image horizontally
+#         self.image = self.images[self.frame]
+#         self.rect = self.image.get_rect()
+#         self.rect.x = screen_width - self.rect.width  # Set the x position to the right side of the screen
+#         self.rect.y = screen_height - self.rect.height  # Set the y position to the bottom of the screen
+
+#     def update(self):
+#         # Randomly move the Goblin horizontally
+#         self.rect.x += randint(0, 0)
+
+#         # Check if the Goblin is out of the screen
+#         if self.rect.right < 0:
+#             self.rect.left = pygame.display.get_surface().get_width()
+#         elif self.rect.left > pygame.display.get_surface().get_width():
+#             self.rect.right = 0
+
+#     def animate(self):
+#         # Animate the Goblin by cycling through the images
+#         self.frame = int(pygame.time.get_ticks() * 0.005) % len(self.images)  # Calculate the current frame index
+#         self.image = self.images[self.frame]
+
 import pygame
 import os
 from pygame.locals import *
@@ -6,27 +39,53 @@ from random import randint
 class Goblin(pygame.sprite.Sprite):
     def __init__(self, screen_width, screen_height):
         pygame.sprite.Sprite.__init__(self)
-        self.images = []
+        self.idle_images = []
+        self.run_images = []
+        self.attack_images = []
         self.frame = 0
-        for i in range(1, 3):
-            img = pygame.image.load(os.path.join('images', 'goblinidle', 'goblinidle' + str(i) + '.png')).convert_alpha()
-            self.images.append(pygame.transform.flip(img, True, False))  # Flipping the image horizontally
-        self.image = self.images[self.frame]
+
+        # Load idle images
+        for i in range(3):  # Adjust the range based on the number of idle images
+            img_idle = pygame.image.load(os.path.join('images', 'goblinidle', 'goblinidle' + str(i) + '.png')).convert_alpha()
+            self.idle_images.append(pygame.transform.flip(img_idle, True, False))  # Flipping the image horizontally
+
+        # Load run images
+        for i in range(4):  # Adjust the range based on the number of run images
+            img_run = pygame.image.load(os.path.join('images', 'goblinrun', 'goblinrun' + str(i) + '.png')).convert_alpha()
+            self.run_images.append(pygame.transform.flip(img_run, True, False))  # Flipping the image horizontally
+
+        # Load attack images
+        for i in range(7):  # Adjust the range based on the number of attack images
+            img_attack = pygame.image.load(os.path.join('images', 'goblinattack', 'goblinattack' + str(i) + '.png')).convert_alpha()
+            self.attack_images.append(pygame.transform.flip(img_attack, True, False))  # Flipping the image horizontally
+
+        self.image = self.idle_images[self.frame]
         self.rect = self.image.get_rect()
         self.rect.x = screen_width - self.rect.width  # Set the x position to the right side of the screen
         self.rect.y = screen_height - self.rect.height  # Set the y position to the bottom of the screen
+        self.is_running = False
+        self.is_attacking = False
 
     def update(self):
-        # Randomly move the Goblin horizontally
-        self.rect.x += randint(-3, 0)
+        if self.is_running:
+            # Move the Goblin towards the main character
+            if self.rect.x > 0:
+                self.rect.x -= 5
 
-        # Check if the Goblin is out of the screen
-        if self.rect.right < 0:
-            self.rect.left = pygame.display.get_surface().get_width()
-        elif self.rect.left > pygame.display.get_surface().get_width():
-            self.rect.right = 0
+        if self.is_attacking:
+            # Implement the logic for attacking the main character
+            pass
 
     def animate(self):
-        # Animate the Goblin by cycling through the images
-        self.frame = int(pygame.time.get_ticks() * 0.005) % len(self.images)  # Calculate the current frame index
-        self.image = self.images[self.frame]
+        if not self.is_running and not self.is_attacking:
+            # Animate the Goblin with idle images
+            self.frame = int(pygame.time.get_ticks() * 0.005) % len(self.idle_images)  # Calculate the current frame index
+            self.image = self.idle_images[self.frame]
+        elif self.is_running:
+            # Animate the Goblin with running images
+            self.frame = int(pygame.time.get_ticks() * 0.005) % len(self.run_images)  # Calculate the current frame index
+            self.image = self.run_images[self.frame]
+        elif self.is_attacking:
+            # Animate the Goblin with attacking images
+            self.frame = int(pygame.time.get_ticks() * 0.005) % len(self.attack_images)  # Calculate the current frame index
+            self.image = self.attack_images[self.frame]
