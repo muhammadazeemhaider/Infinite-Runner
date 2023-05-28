@@ -25,7 +25,7 @@ Runner.rect.x = 100  # go to x
 Runner.rect.y = 500  # go to y
 player_list = pygame.sprite.Group()
 player_list.add(Runner)
-steps = 7
+steps = 5
 
 enemy_list = pygame.sprite.Group()  # Create a group for enemies
 goblin = Goblin(screen_width, screen_height)
@@ -67,6 +67,13 @@ while game_is_running:
     if background_x <= -background_rect.width:
         background_x = 0
 
+    # Check for collision between the penguin and the goblin
+    collided_enemies = pygame.sprite.spritecollide(Runner, enemy_list, False)
+    if collided_enemies:
+        # Collision occurred between penguin and goblin
+        # Add your collision handling logic here
+        print("Collision occurred between penguin and goblin")
+
     Runner.update()  # update player position
     goblin.update()  # update enemy position
     # goblin.animate()  # animate goblin
@@ -74,7 +81,12 @@ while game_is_running:
     # Check for collision between the goblin and the main character
     goblin.collide_with_runner(Runner)
 
-    goblin.animate()
+    if goblin.is_attacking:
+        goblin.animate_attack()  # Call a separate method for attack animation
+    elif goblin.is_running:
+        goblin.animate()  # Call the method for running/idle animation
+    else:
+        goblin.animate()  # Call the method for running/idle animation
 
     if goblin.rect.right < 0:  # Respawn goblin when it goes off the screen
         goblin.rect.left = screen_width

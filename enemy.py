@@ -30,6 +30,8 @@ class Goblin(pygame.sprite.Sprite):
         self.rect.y = screen_height - self.rect.height  # Set the y position to the bottom of the screen
         self.is_running = False
         self.is_attacking = False
+        self.attack_cooldown = 0  # Cooldown timer for attacks
+        self.attack_cooldown_duration = 1000  # Adjust as needed (in milliseconds)
 
     def update(self):
         if self.is_running:
@@ -39,7 +41,9 @@ class Goblin(pygame.sprite.Sprite):
 
         if self.is_attacking:
             # Implement the logic for attacking the main character
-            pass
+            if pygame.time.get_ticks() - self.attack_cooldown >= self.attack_cooldown_duration:
+                self.attack_cooldown = pygame.time.get_ticks()
+                # Add your attack code here
 
     def animate(self):
         if not self.is_running and not self.is_attacking:
@@ -55,14 +59,20 @@ class Goblin(pygame.sprite.Sprite):
             self.frame = int(pygame.time.get_ticks() * 0.005) % len(self.attack_images)  # Calculate the current frame index
             self.image = self.attack_images[self.frame]
 
+    def attack(self):
+        self.is_attacking = True
+        self.attack_cooldown = pygame.time.get_ticks()
+
+    def animate_attack(self):
+        self.frame = int(pygame.time.get_ticks() * 0.005) % len(self.attack_images)
+        self.image = self.attack_images[self.frame]
+
     def collide_with_runner(self, runner):
         if pygame.sprite.collide_rect(self, runner):
             # Collision occurred between goblin and runner
-            # Add your collision handling logic here
-            self.rect.x += 10  # Push the goblin away from the runner (adjust the value as needed)
-            print("Collision occurred between goblin and runner")
-            self.is_attacking = True
+            self.rect.x += 5  # Push the goblin away from the runner (adjust the value as needed)
+            if not self.is_attacking:
+                self.attack()  # Call the attack method
         else:
             self.is_attacking = False
-
 
