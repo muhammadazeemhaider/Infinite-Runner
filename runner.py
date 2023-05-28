@@ -4,7 +4,7 @@ import os
 
 class runner(pygame.sprite.Sprite):
     
-    def __init__(self):
+    def __init__(self, goblin):
         ALPHA = (0, 255, 0)
         pygame.sprite.Sprite.__init__(self)
         self.movex = 0  # move along X
@@ -20,6 +20,7 @@ class runner(pygame.sprite.Sprite):
             self.rect = self.image.get_rect()
         self.gravity = 0.9  # Gravity value
         self.jump_power = -20  # Initial jump power
+        self.goblin = goblin
 
     def update(self):
         self.apply_gravity()  # Apply gravity to vertical movement
@@ -44,6 +45,10 @@ class runner(pygame.sprite.Sprite):
     def control(self, x, y):
         self.movex += x
         self.movey += y
+        if self.rect.colliderect(self.goblin.rect):
+            # Collision occurred between runner and goblin
+            self.rect.x -= self.movex  # Undo the movement in the x-direction
+            self.rect.y -= self.movey  # Undo the movement in the y-direction
 
     def apply_gravity(self):
         self.movey += self.gravity
@@ -56,6 +61,6 @@ class runner(pygame.sprite.Sprite):
             # Collision occurred between runner and enemy
             # Add your collision handling logic here
             self.rect.x -= 10  # Push the runner away from the enemy (adjust the value as needed)
+            self.movey = 0  # Stop vertical movement of the runner
+            self.gravity = 0  # Disable gravity for the runner
             print("Collision occurred!")
-
-

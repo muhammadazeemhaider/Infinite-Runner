@@ -20,15 +20,15 @@ background_x = 0
 
 BackGround = Background(background_image, [0, 0])
 
-Runner = runner()  # spawn player
+goblin = Goblin(screen_width, screen_height)  # spawn enemy
+Runner = runner(goblin)  # spawn player
 Runner.rect.x = 100  # go to x
 Runner.rect.y = 500  # go to y
 player_list = pygame.sprite.Group()
 player_list.add(Runner)
-steps = 5
+steps = 4
 
 enemy_list = pygame.sprite.Group()  # Create a group for enemies
-goblin = Goblin(screen_width, screen_height)
 enemy_list.add(goblin)  # Add the goblin to the enemy group
 
 game_is_running = True
@@ -105,12 +105,12 @@ while game_is_running:
         # Reset the goblin's state
         goblin.is_running = False
 
-    if pygame.sprite.spritecollideany(Runner, enemy_list):
-        # Trigger the attacking sequence
-        goblin.is_attacking = True
-    else:
-        # Reset the goblin's state
-        goblin.is_attacking = False
+    # if pygame.sprite.spritecollideany(Runner, enemy_list):
+    #     # Trigger the attacking sequence
+    #     goblin.is_attacking = True
+    # else:
+    #     # Reset the goblin's state
+    #     goblin.is_attacking = False
 
     if Runner.rect.left < 0:
         Runner.rect.left = 0

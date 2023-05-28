@@ -70,9 +70,10 @@ class Goblin(pygame.sprite.Sprite):
     def collide_with_runner(self, runner):
         if pygame.sprite.collide_rect(self, runner):
             # Collision occurred between goblin and runner
-            self.rect.x += 5  # Push the goblin away from the runner (adjust the value as needed)
-            if not self.is_attacking:
-                self.attack()  # Call the attack method
+            self.is_running = False  # Stop the goblin from running
+            self.is_attacking = True  # Start the goblin's attack animation
+            # self.rect.x =  runner.rect.x + runner.rect.width  # Set the goblin's x position to the right of the runner
+            # self.update()       # Update the goblin's image
+            # runner.control(0, 0)  # Stop the runner from moving
         else:
-            self.is_attacking = False
-
+            self.is_attacking = False  # Stop the goblin's attack animation
