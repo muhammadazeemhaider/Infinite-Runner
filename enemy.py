@@ -72,8 +72,5 @@ class Goblin(pygame.sprite.Sprite):
             # Collision occurred between goblin and runner
             self.is_running = False  # Stop the goblin from running
             self.is_attacking = True  # Start the goblin's attack animation
-            # self.rect.x =  runner.rect.x + runner.rect.width  # Set the goblin's x position to the right of the runner
-            # self.update()       # Update the goblin's image
-            # runner.control(0, 0)  # Stop the runner from moving
         else:
             self.is_attacking = False  # Stop the goblin's attack animation

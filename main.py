@@ -73,10 +73,11 @@ while game_is_running:
         # Collision occurred between penguin and goblin
         # Add your collision handling logic here
         print("Collision occurred between penguin and goblin")
+        game_is_running = False
 
     Runner.update()  # update player position
     goblin.update()  # update enemy position
-    # goblin.animate()  # animate goblin
+    goblin.animate()  # animate goblin
 
     # Check for collision between the goblin and the main character
     goblin.collide_with_runner(Runner)
@@ -85,32 +86,23 @@ while game_is_running:
         goblin.animate_attack()  # Call a separate method for attack animation
     elif goblin.is_running:
         goblin.animate()  # Call the method for running/idle animation
-    else:
-        goblin.animate()  # Call the method for running/idle animation
 
     if goblin.rect.right < 0:  # Respawn goblin when it goes off the screen
         goblin.rect.left = screen_width
         goblin.rect.y = screen_height - goblin.rect.height
 
-    # Calculate the distance between the goblin and the main character
+    # Calculate the distance between the goblin and the penguin (runner)
     distance = abs(Runner.rect.x - goblin.rect.x)
 
     # Define the threshold distance to trigger the running sequence
-    threshold_distance = 400  # Adjust as needed
+    threshold_distance = 500  # Adjust as needed
 
-    if distance < threshold_distance:
-        # Trigger the running sequence
+    # Update the logic for triggering the running sequence
+    if distance < threshold_distance or goblin.rect.x < Runner.rect.x:
+        # If the goblin is within 500 units or has passed the penguin, make it run
         goblin.is_running = True
     else:
-        # Reset the goblin's state
         goblin.is_running = False
-
-    # if pygame.sprite.spritecollideany(Runner, enemy_list):
-    #     # Trigger the attacking sequence
-    #     goblin.is_attacking = True
-    # else:
-    #     # Reset the goblin's state
-    #     goblin.is_attacking = False
 
     if Runner.rect.left < 0:
         Runner.rect.left = 0
