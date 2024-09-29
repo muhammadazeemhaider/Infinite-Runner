@@ -21,6 +21,7 @@ class runner(pygame.sprite.Sprite):
         self.gravity = 0.9  # Gravity value
         self.jump_power = -20  # Initial jump power
         self.goblin = goblin
+        self.on_block = False  # Indicates if the runner is on a block (initialize to False)
 
     def update(self):
         self.apply_gravity()  # Apply gravity to vertical movement
@@ -55,12 +56,3 @@ class runner(pygame.sprite.Sprite):
 
     def jump(self):
         self.movey = self.jump_power
-
-    def collide_with_enemy(self, enemy):
-        if pygame.sprite.collide_rect(self, enemy):
-            # Collision occurred between runner and enemy
-            # Add your collision handling logic here
-            self.rect.x -= 10  # Push the runner away from the enemy (adjust the value as needed)
-            self.movey = 0  # Stop vertical movement of the runner
-            self.gravity = 0  # Disable gravity for the runner
-            print("Collision occurred!")

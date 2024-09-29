@@ -116,10 +116,21 @@ while game_is_running:
         collided_blocks = pygame.sprite.spritecollide(Runner, block_list, False)
         if collided_blocks:
             lowest_block = min(collided_blocks, key=lambda b: b.rect.top)
+            # Ensure the runner is falling onto the top of the block and not hitting its side
             if Runner.rect.bottom <= lowest_block.rect.top + Runner.movey:
                 Runner.rect.bottom = lowest_block.rect.top
-                Runner.movey = 0
+                Runner.movey = 0  # Stop vertical movement
                 Runner.gravity = 0  # Stop applying gravity when on a platform
+                Runner.on_block = True  # Indicate that the runner is on a block
+            else:
+                Runner.on_block = False  # Not on top of the block
+        else:
+            Runner.on_block = False  # Runner is not on any block
+
+    # If the runner is on a block and starts jumping (moving up)
+    if Runner.on_block and Runner.movey < 0:  # If jumping off the block
+        Runner.on_block = False  # Reset the on_block flag
+        Runner.gravity = 0.9  # Reapply gravity when leaving the block
 
     # --- Collision Detection with Enemies ---
     collided_enemies = pygame.sprite.spritecollide(Runner, enemy_list, False)
