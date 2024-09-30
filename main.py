@@ -125,7 +125,7 @@ while game_is_running:
             else:
                 Runner.on_block = False  # Not on top of the block
         else:
-            Runner.on_block = False  # Runner is not on any block
+            Runner.on_block = False
 
     # If the runner is on a block and starts jumping (moving up)
     if Runner.on_block and Runner.movey < 0:  # If jumping off the block
