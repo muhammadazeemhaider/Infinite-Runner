@@ -123,7 +123,7 @@ while game_is_running:
                 Runner.gravity = 0  # Stop applying gravity when on a platform
                 Runner.on_block = True  # Indicate that the runner is on a block
             else:
-                Runner.on_block = False  # Not on top of the block
+                Runner.on_block = False
         else:
             Runner.on_block = False
 
